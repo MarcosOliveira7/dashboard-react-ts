@@ -1,32 +1,35 @@
-import React, { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { BrowserRouter, Routes, Route  } from 'react-router-dom';
+
+import Layout from './components/layout/';
+
+import Home from './pages/home';
+
+import CadastrarInformacoes from './pages/curriculo/CadastrarInformacoes';
+import CadastrarExperiencia from './pages/curriculo/CadastrarExperiencia/CadastrarExperiencia';
+import ListaPortfolio from './pages/portfolio/ListaPortfolio';
+import ListaExperiencia from './pages/curriculo/ListaExperiencia'
+import CadastrarPortfolio from './pages/portfolio/ListaPortfolio/CadastrarPortfolio';
+
+const App: React.FC = () => {
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button onClick={() => setCount(count => count + 1)}>count is: {count}</button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  )
-}
+      <BrowserRouter>
+      <Layout>
+          <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/curriculo/informacoes/cadastro" element={<CadastrarInformacoes />} />
+              <Route path="/curriculo/experiencia/cadastro" element={<CadastrarExperiencia />} />
+              <Route path="curriculo/experiencia/lista" element={<ListaExperiencia />} />
+             {<Route path="/portfolio/cadastro" element={<CadastrarPortfolio/>}  /> }
+              <Route path="/portfolio/lista" element={<ListaPortfolio/>}  />
+              
+          </Routes>
+      </Layout>
 
-export default App
+      </BrowserRouter>
+  );
+};
+
+export default App;
