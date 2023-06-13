@@ -1,27 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
 import styles from './CadastrarInformacoes.module.css';
-
 import Input from '../../../components/forms/input/input';
+import Textarea from '../../../components/forms/textarea/textarea';
+import { Informacoes, updateInformacoes, getInformacoes } from '../../../services/InformacoesService';
+import InformacoesCard from './InformacoesCard/InformacoesCard';
 
-import Textarea from "../../../components/forms/textarea/textarea";
-
-interface FormValues {
-
-    foto: string;
-    nome: string;
-    cargo: string;
-    resumo: string;
-
-}
 
 const CadastrarInformacoes: React.FC = () => {
 
-    const initialValues: FormValues = {
+    const [informacoes, setInformacoes] = useState<Informacoes>({} as Informacoes);
 
+    const initialValues: Informacoes = {
+        id: 1,
         foto: '',
         nome: '',
         cargo: '',
@@ -37,39 +31,76 @@ const CadastrarInformacoes: React.FC = () => {
 
     });
 
+    const fetchInformacao = async () => {
+        try {
+            const informacao = await getInformacoes();
+            setInformacoes(informacao);
+        } catch (error) {
+            console.error('Erro ao buscar informações', error);
+        }
+    };
 
-    const onSubmit = (values: FormValues, { resetForm }: { resetForm: () => void }) => {
-        // Lógica de envio para backend
-        console.log(values);
-        resetForm();
-        alert('Formulário enviado com sucesso');
+    useEffect(() => {
+        fetchInformacao();
+
+    }, []);
+
+    const onSubmit = async (values: Informacoes, { resetForm }: { resetForm: () => void }) => {
+
+        try {
+            await updateInformacoes(values);
+            setInformacoes(values);
+            console.log(values);
+            // resetForm();
+            alert('Formulário enviado com sucesso');
+        } catch (error) {
+            console.error('Erro ao enviar o formulário:', error);
+            alert('Ocorreu um erro ao enviar o formulário. Tente novamente');
+        }
+
+    };
+
+    const handleDelete = async () => {
+        try {
+            await updateInformacoes(initialValues);
+            setInformacoes(initialValues);
+            alert('Informações deletadas com sucesso!');
+
+        } catch (error) {
+            console.error('Erro ao deletar informações', error);
+            alert('Ocorreu um erro ao deletar as informações. Tente novamente.');
+        }
 
     };
 
 
     return (
         <div className={styles.formWrapper}>
-            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+            <Formik
+                initialValues={informacoes}
+                enableReinitialize={true}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}>
                 {({ errors, touched }) => (
                     <Form className={styles.form}>
 
                         <h2 className={styles.title}>Cadastrar Informações</h2>
 
-                        <Input 
+                        <Input
                             label="Foto"
                             name="foto"
                             errors={errors.foto}
                             touched={touched.foto}
                         />
 
-                        <Input 
+                        <Input
                             label="Nome"
                             name="nome"
                             errors={errors.nome}
                             touched={touched.nome}
                         />
 
-                        <Input 
+                        <Input
                             label="Cargo"
                             name="cargo"
                             errors={errors.cargo}
@@ -86,6 +117,17 @@ const CadastrarInformacoes: React.FC = () => {
                     </Form>
                 )}
             </Formik>
+
+            {informacoes && Object.entries(informacoes).some
+            (([key, value]) => key !== "id" && value.trim() !== ""
+            ) && (
+                <div className={styles.cardContainer}>
+                    <InformacoesCard informacoes={informacoes} />
+                    <button type="button" onClick={handleDelete} className={`${styles.button} ${styles.delete}`}>
+                        Deletar
+                    </button>
+                </div>
+            )}
 
         </div>
     );

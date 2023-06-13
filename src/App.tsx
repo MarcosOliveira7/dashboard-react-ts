@@ -10,7 +10,7 @@ import CadastrarInformacoes from './pages/curriculo/CadastrarInformacoes';
 import CadastrarExperiencia from './pages/curriculo/CadastrarExperiencia/CadastrarExperiencia';
 import ListaPortfolio from './pages/portfolio/ListaPortfolio';
 import ListaExperiencia from './pages/curriculo/ListaExperiencia'
-import CadastrarPortfolio from './pages/portfolio/ListaPortfolio/CadastrarPortfolio';
+import CadastrarPortfolio from './pages/portfolio/CadastrarPortfolio';
 
 const App: React.FC = () => {
 

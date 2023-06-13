@@ -19,6 +19,7 @@
 .formGroup {
     display: flex;
     flex-direction: column;
+    border: none;
     margin-bottom: 20px;
     width: 100%;
     border: none;

@@ -1,33 +1,51 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { useNavigate } from 'react-router-dom';
 
 import styles from './ListaExperiencia.module.css';
 
-interface Experiencia {
-  titulo: string;
-  descricao: string;
-  tipo: string;
-  anoInicio: string;
-  anoFim: string;
-}
+import { Experiencia, deleteExperiencia, getExperiencias, } from '../../../services/experienciaService';
+
 
 const ListaExperiencia: React.FC = () => {
-  const [experiencias, setExperiencias] = React.useState<Experiencia[]>([
-    {
-      titulo: "Estágio em Desenvolvimento de Software",
-      descricao: "Desenvolvimento de aplicações web utilizando React e Node.js",
-      tipo: "profissional",
-      anoInicio: "2019",
-      anoFim: "2020",
-    },
-  ]);
+  const navigate = useNavigate();
+  
+  const [experiencias, setExperiencias] = React.useState<Experiencia[]>([]);
 
-  const handleDelete = (index: number) => {
-    // Lógica para excluir
+  const fetchExperiencias = async () => {
+    try {
+      const experiencias = await getExperiencias();
+      setExperiencias(experiencias);
+
+    } catch (error) {
+      console.log('Erro ao buscar experiencias', error)
+
+    }
+
   };
+
+  useEffect(() => {
+    fetchExperiencias();
+  }, []);
 
   const handleEdit = (experiencia: Experiencia) => {
-    // Lógica para editar
+      navigate('/curriculo/experiencia/cadastro', { state: experiencia });
   };
+
+  const handleDelete = async (id: number) => {
+    try {
+
+      await deleteExperiencia(id);
+      fetchExperiencias();
+      alert('Experiencia concluida com sucesso')
+
+    } catch (error) {
+        console.log('Erro ao buscar experiencias', error);
+        alert('Ocorreu um erro ao excluir a experiencia')
+    }
+    
+  };
+
 
   return (
     <table className={styles.table}>
@@ -51,7 +69,7 @@ const ListaExperiencia: React.FC = () => {
             <td>{experiencia.anoFim}</td>
             <td>
               <button onClick={() => handleEdit(experiencia)}>Editar</button>
-              <button onClick={() => handleDelete(index)}>Excluir</button>
+              <button onClick={() => handleDelete(experiencia.id)}>Excluir</button>
             </td>
           </tr>
         ))}
