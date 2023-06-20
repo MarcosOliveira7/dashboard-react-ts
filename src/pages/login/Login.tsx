@@ -25,11 +25,11 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login = () => {
-    
+    const navigate = useNavigate();
 
     const onSubmit = async (values: LoginValues) => {
         try {
-            // Lógica de login
+            navigate("/")
             console.log(values);
         } catch (error) {
             console.error("Erro ao fazer login:", error);

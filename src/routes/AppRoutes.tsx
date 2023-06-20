@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Route } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import Layout from '../components/layout/';
 
@@ -17,12 +17,7 @@ const AppRoutes: React.FC = () => {
     return (
 
         <Layout>
-              <Route path="/" element={<Home />} />
-              <Route path="/curriculo/informacoes/cadastro" element={<CadastrarInformacoes />} />
-              <Route path="/curriculo/experiencia/cadastro" element={<CadastrarExperiencia />} />
-              <Route path="curriculo/experiencia/lista" element={<ListaExperiencia />} />
-             {<Route path="/portfolio/cadastro" element={<CadastrarPortfolio/>}  /> }
-              <Route path="/portfolio/lista" element={<ListaPortfolio/>}  />
+            <Outlet />
         </Layout>
 
     );
