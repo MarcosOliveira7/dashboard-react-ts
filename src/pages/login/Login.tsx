@@ -5,7 +5,8 @@ import * as Yup from "yup";
 import styles from "./Login.module.css";
 import Input from "../../components/forms/input";
 
-import { login } from "../../services/authService";
+import { login as loginService } from "../../services/authService";
+import { useAuth } from "../../context/AuthContext";
 
 interface LoginValues {
   email: string;
@@ -26,12 +27,14 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const onSubmit = async (values: LoginValues) => {
     try {
-      await login(values.email, values.password);
+      // console.log(values);
+      const user = await loginService(values.email, values.password);
+      login(user);
       navigate("/");
-      console.log(values);
     } catch (error) {
       console.error(error);
       alert("Ocorreu um erro ao enviar o formulário");

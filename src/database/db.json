@@ -6,7 +6,6 @@
       "password": "teste123"
     }
   ],
-
   "informacoes": [
     {
       "id": 1,
@@ -16,7 +15,16 @@
       "resumo": "testinho"
     }
   ],
-  "experiencias": [],
+  "experiencias": [
+    {
+      "id": 1,
+      "titulo": "açai saude ",
+      "descricao": "aaaa",
+      "tipo": "profissional",
+      "anoInicio": "2020",
+      "anoFim": "2023"
+    }
+  ],
   "portfolio": [
     {
       "id": 1,
