@@ -1,1 +1,1 @@
-export { default as Home } from "./authRoutes";
+export { default as Home } from './AppRoutes'
