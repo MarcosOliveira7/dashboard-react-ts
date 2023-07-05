@@ -19,7 +19,7 @@ interface FormProps<T> {
   children: (formikProps: FormikProps<T>) => React.ReactNode;
 }
 
-const CustomForm = <T extends FormikValues>({
+const Form = <T extends FormikValues>({
   initialValues,
   validationSchema,
   onSubmit,
@@ -32,14 +32,10 @@ const CustomForm = <T extends FormikValues>({
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {(formikProps) => (
-          <FormikForm className={styles.form}>
-            {children(formikProps)}
-          </FormikForm>
-        )}
+        {(formikProps) => <FormikForm>{children(formikProps)}</FormikForm>}
       </Formik>
     </div>
   );
 };
 
-export default CustomForm;
+export default Form;
